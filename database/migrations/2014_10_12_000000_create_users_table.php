@@ -14,13 +14,36 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigincrements('id');
+            $table->bigInteger('office_id')->unsigned();
+            $table->bigInteger('laboral_id')->unsigned();
+
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('dni')->unique();
+            $table->string('ap_paterno');
+            $table->string('ap_materno');
+            $table->string('gender');
+            $table->date('f_birth');
+            $table->string('phone');
+
+            $table->string('position');
+           
+            $table->enum('status',['ACTIVO','INACTIVO'])->default('ACTIVO');
+
+
+            
             $table->rememberToken();
             $table->timestamps();
+
+            //relaciones
+            $table->foreign('office_id')->references('id')->on('offices')
+                ->onUpdate('cascade');
+            
+            $table->foreign('laboral_id')->references('id')->on('laborals')
+                ->onUpdate('cascade');
+
         });
     }
 
